@@ -36,6 +36,7 @@
 //             e.preventDefault();
 //             var article = input_object(article_form);
 //             if(article.id){
+//                 article.id= parseInt(article.id);
 //              b.updata(parseInt(article.id),article)
 //             }else{
 //                 b.add(article);
@@ -104,108 +105,140 @@
 //     }
 //
 // })();
+//
+
 
 ;(function () {
-    'use strict';
-
     var article_list = document.getElementById('article-list');
     var article_form = document.getElementById('article-form');
+    var btn_bt = document.getElementById('btn_bt');
+    var btn_b = document.getElementById('btn_b');
 
     init();
 
     function init() {
         render();
-        bind_event();
+        dian_diao();
+        find_you_want();
+        init_all();
     }
 
-//添加
-    function bind_event() {
+    //添加
+    function dian_diao() {
         article_form.addEventListener('submit', function (e) {
             e.preventDefault();
-            var article = change_object();
-            if (article.id) {
-                b.updata(parseInt(article.id), article);
-            }
-            else {
+            var article = get_input_value();
+            if (!article.id) {
                 b.add(article);
+            } else {
+                article.id = parseInt(article.id);
+                b.updata(article.id, article);
             }
             render();
-        })
+        });
     }
 
-    //获取值变成对象
-    function change_object() {
+    //获取输入的值 并封装成对象
+    function get_input_value() {
         var data = {};
         var input_list = article_form.children;
         for (var i = 0; i < input_list.length; i++) {
             var input = input_list[i];
             var key = input.getAttribute('name');
             var val = input.value;
+            input.value = '';
             data[key] = val;
         }
         return data;
     }
 
-    //删除
-    window.on_del_click = on_del_click;
+    //重置
+    function init_all() {
+        btn_b.addEventListener('click', function (e) {
+            e.preventDefault();
+            get_input_value();
+            render();
+        })
+    }
 
-    function on_del_click(obj) {
-        var n = obj.id;
-        var nn = n.slice(4);
-        b.del(parseInt(nn));
+    //查找
+    function find_you_want() {
+        btn_bt.addEventListener('click', function (e) {
+            e.preventDefault();
+            var a = [];
+            //获取到第一个输入框的值  key
+            var a_article = get_input_value();
+            var key = a_article.title;
+            if (!key || key === '') {
+                alert("先输入你要查找的关键字试试");
+            }
+            else {
+                var b_article = b.read_1(key);
+                if (b_article) {
+                    a.push(b_article);
+                    render(a);
+                } else {
+                    alert("输入的信息不存在");
+                }
+            }
+        })
+    }
+
+    //删除
+    window.del_this_el = del_this_el;
+
+    function del_this_el(obj) {
+        var n = obj.id.slice(4);
+        b.del(parseInt(n));
         render();
     }
 
-    //修稿
-    window.on_x_click = on_x_click;
+    //修改
+    window.updata_this_el = updata_this_el;
 
-    function on_x_click(obj) {
-        var m = obj.id;
-        var mm = m.slice(4);
-        var article_s = b.read(parseInt(mm));
-        input_search(article_s);
+    function updata_this_el(obj) {
+        var m = obj.id.slice(4);
+        var article_up = b.read(parseInt(m));
+        el_input_ye(article_up);
     }
 
-    //把找到的对象传到输入框中
-    function input_search(pack) {
-        for (var key in pack) {
-            var val = pack[key];
-            var input = article_form.querySelector('[name=' + key + ']');
+    function el_input_ye(article) {
+        for (var temp in article) {
+            var val = article[temp];
+            var input = article_form.querySelector('[name=' + temp + ']');
             if (!input) {
                 continue;
-            }
-            else {
+            } else {
                 input.value = val;
             }
-
         }
     }
 
-    //所有东西渲染到页面上
-
-    function render() {
+//渲染到页面上  整体
+    function render(article) {
         article_list.innerHTML = '';
-        var article_data_1 = b.read();
-        article_data_1.forEach(function (article) {
+        var comment;
+        if (!article) {
+            var article_all_data = b.read();
+            comment = article_all_data;
+        } else {
+            comment = article;
+        }
+        comment.find(function (article) {
             var mydiv = document.createElement('div');
             mydiv.classList.add('first-div');
             mydiv.innerHTML = `
-               <button id="btn-${article.id}" onclick=on_del_click(this)>X</button>
-               <button id="btn-${article.id}" onclick=on_la_click(this)>v</button>
-               <p style="text-align: center; width:880px;">${article.title}</p>            
-               <p style="text-align: center; width:880px; ">${article.author}</p>            
-               <p style="text-align: center; width:880px; ">${article.content}</p>    
-               <button id="btn-${article.id}" onclick="on_x_click(this)">编辑</button>
-            `;
+                <button id="btn-${article.id}" onclick="del_this_el(this)">X</button>
+                <button id="btn-${article.id}" onclick="updata_this_el(this)" class="fa fa-edit"></button>
+                <p style="text-align: center;font-size: 18px;"> ${article.title}-${article.id}</p>
+                 <p style="text-align: center"> ${article.content}</p>
+                <p style="text-align: center">作者: ${article.author}</p>
+               
+              `;
             article_list.appendChild(mydiv);
         })
-
     }
-
-
 })();
-
-
 
 
 

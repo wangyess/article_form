@@ -8,7 +8,8 @@
         add: add,
         del: del,
         updata: updata,
-        read: read
+        read: read,
+        read_1:read_1
     };
     //....................>>>.>>..............初始化..................>....>>.....>>.....
     init_data();
@@ -53,16 +54,34 @@
 
 //....................>>...............>>...修改..............>>.............>........
     function updata(id, pack) {
+        if(!id) return;
+
+        id = parseInt(id);
+
         var article_index = search_id(id);
         var article = article_data[article_index];
+        article.id = id;
         article_data[article_index] = Object.assign({}, article, pack);
         updata_article_data();
     }
+//....................................查看.........................................
+    function read_1(keyword) {
+        return article_data.find(function (item) {
+            if(item.title.indexOf(keyword)!==-1){
+                return true;
+            }
+        })
+
+    }
+
+
+
 
     //....................>>................查找....>>........>>......................
     function read(id) {
         if(id){
-            return find_el(id);
+            var r = find_el(id);
+            return r;
         }
         else {
             return article_data;

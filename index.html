@@ -6,16 +6,22 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>这个天才又来啦❤️</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
         .first-div{
-            border:1px solid #00fbc9;
-            margin-top: 20px;
+            border:1px solid white;
             width: 880px;
-            margin: 0 auto;
-
+            margin: 20px auto 0 auto;
         }
         [name=content]{
-            width:410px;
+            width:408px;
             height: 40px;
             margin-top: 5px;
 
@@ -24,30 +30,57 @@
         [name=title]{
             width:200px;
             height: 40px;
+            margin-top: 5px;
         }
         [name=author]{
               width:200px;
               height: 40px;
           }
         [type=submit]{
+            border: 0;
             margin-top: 2px;
-            width:416px;
+            width:132px;
             height: 40px;
+            background-color: white;
+        }
+        [type=button]{
+            border: 0;
+            margin-top: 2px;
+            width:132px;
+            height: 40px;
+            background-color: white;
+        }
+        [type=submit]:hover{
+            background-color: #00fbc9;
+        }
+        [type=button]:hover{
+            background-color: #00fbc9;
         }
         #article-form{
             text-align: center;
         }
-
+        .vvy{
+           background-color: #d7d6dc;
+        }
+        #article-list{
+            min-height: 700px;
+            background-color: #dce3d9;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
+<div class="vvy">
 <form action="" id="article-form">
     <input type="hidden" name="id">
-    <input type="text" name="title" placeholder="标题" id="kkl">
+    <input type="text" name="title" placeholder="标题/查找标题" id="kkl">
     <input type="text" name="author" placeholder="作者"><br>
     <textarea name="content" id="" cols="80" rows="10" placeholder="内容"></textarea><br>
-    <button type="submit">提交</button>
+    <button type="submit">添加</button>
+    <button type="button" id="btn_bt">查找</button>
+    <button type="button" id="btn_b">重置</button>
 </form>
+</div>    
 <div id="article-list">
 
 </div>
