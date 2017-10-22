@@ -55,9 +55,7 @@
 //....................>>...............>>...修改..............>>.............>........
     function updata(id, pack) {
         if(!id) return;
-
         id = parseInt(id);
-
         var article_index = search_id(id);
         var article = article_data[article_index];
         article.id = id;
@@ -66,12 +64,13 @@
     }
 //....................................查看.........................................
     function read_1(keyword) {
-        return article_data.find(function (item) {
+        var a=[];
+        article_data.find(function (item) {
             if(item.title.indexOf(keyword)!==-1){
-                return true;
+               a.push(item);
             }
-        })
-
+        });
+         return a;
     }
 
 

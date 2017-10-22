@@ -165,7 +165,6 @@
     function find_you_want() {
         btn_bt.addEventListener('click', function (e) {
             e.preventDefault();
-            var a = [];
             //获取到第一个输入框的值  key
             var a_article = get_input_value();
             var key = a_article.title;
@@ -175,8 +174,7 @@
             else {
                 var b_article = b.read_1(key);
                 if (b_article) {
-                    a.push(b_article);
-                    render(a);
+                    render(b_article);
                 } else {
                     alert("输入的信息不存在");
                 }
